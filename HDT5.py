@@ -29,6 +29,7 @@ def program(name, env, arrival_time, memory_amount, instruction_amount, ram, cpu
     yield ram.get(memory_amount)
     instructions_remaining = instruction_amount
     # - READY - 
+    ciclo_contador=0
     #while instructions remainig is != 0 then:
     while instructions_remaining > 0:
         print(f"\"{name}\" Program requesting cpu for {instructions_remaining} instructions at {env.now:.3f}\n")
@@ -37,9 +38,30 @@ def program(name, env, arrival_time, memory_amount, instruction_amount, ram, cpu
         with cpu.request() as req:
             print(f"\"{name}\" Program was granted cpu access at {env.now:.3f}\n")
             yield req
+            
+            #cycle counter
+            ciclo_contador+=1
+            print(f"\"{name}\" Cycle counter:  {ciclo_contador}\n")
+
+            #instruccions per cycle
+            #instructions_remaining =max(instruction_amount-INSTRUCTIONS_PER_CYCLE)
+            
+            if instruction_amount==0:
+                print(f"\"{name}\" Program has finished its execution at {env.now:.3f}\n")
+            else: 
+                next= random.randint(1,2)
+                if next==1:
+                    print(f"\" Process Wainting {name}\n")
+                    yield env.timeout(random.randint(1,5))
+
+                else:
+                    print(f"\" Process Ready {name}\n")
+            
             #cpu executed instructions
             # discount instruccion
             instructions_remaining -= INSTRUCTIONS_PER_CYCLE
+       
+       
     #print execution intruccion        
     print(f"\"{name}\" Program releasing {memory_amount} units of memory at {env.now:.3f}\n")
     #free ram
