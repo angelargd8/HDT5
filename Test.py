@@ -1,3 +1,6 @@
+# "Formulario"
+# https://simpy.readthedocs.io/en/latest/topical_guides/resources.html#res-type-container
+#modulos
 import simpy
 import random
 
@@ -6,7 +9,8 @@ INSTRUCTIONS_PER_CYCLE = 3
 RANDOM_SEED = 10
 RAM_CAPACITY= 100
 SUM_OF_CPU_TIME = 0
-
+# La velocidad del cpu se modela con que atiende en una unidad de tiempo q permite realizar 3 intrucciones
+#functions
 def program(name, env, arrival_time, memory_amount, instruction_amount, ram, cpu):
     #- NEW -
     yield env.timeout(arrival_time)
@@ -66,6 +70,7 @@ def programGenerator(env, num_of_programs):
 
 #Initialize simulation
 env = simpy.Environment()
+#simulation objects
 cpu = simpy.Resource(env, capacity=1)
 ram = simpy.Container(env, init=100, capacity=RAM_CAPACITY)
 
